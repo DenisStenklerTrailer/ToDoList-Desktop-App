@@ -15,25 +15,30 @@ window = sg.Window("My To-Do App",
 
 while True:
     event, values = window.read() #Displays the window actually on the screen
-    # print(event)
-    # print(values)
-    #print(values['todos'][0])
+    #print(1, event)
+    #print(2, values)
+    #print(3, values['todos'])
     if event == "Add":
         todos = functions.ReadingTodos()
         new_todo = values["todo"] + "\n" #če ne veš kaj vrne values in event odkomentiraj printe
         todos.append(new_todo)
         functions.WritingTodos(todos)
+        window["todos"].update(values=todos)  #todos je tukaj key ki ga definiramo zgoraj ko kreiramo objekt
     elif event == "Edit":
-        todo_selected = values["todos"][0]
-        new_todo = values["todo"]
+        todo_to_edit = values["todos"][0]
+
+        new_todo = values["todo"] + "\n"
 
         todos = functions.ReadingTodos()
 
-        index = todos.index(new_todo)
-
+        index = todos.index(todo_to_edit)
         todos[index] = new_todo
 
         functions.WritingTodos(todos)
+        window["todos"].update(values=todos) #updejtanje seznama ko kliknemo edit
+    elif event == "todos": #ta even je na todos ko kliknemo na enega izmed to do-jev v seznamu
+        data = values['todos'][0].strip() # znebimo se \n na koncu
+        window["todo"].update(value=data)
     elif sg.WIN_CLOSED == event:
         #print(event)
         break
